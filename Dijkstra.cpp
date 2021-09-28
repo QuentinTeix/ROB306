@@ -1,6 +1,7 @@
 #include<iostream>
 #include <fstream>
 #include<climits>
+
 using namespace std;
 
 const int DIMENSION = 20;
