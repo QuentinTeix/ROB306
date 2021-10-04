@@ -3,10 +3,12 @@
 #include<climits>
 #include <chrono>
 
+#include "generate.cpp"
+
 
 using namespace std;
 
-const int DIMENSION = 5;
+const int DIMENSION = 50;
 int TAB[DIMENSION][DIMENSION];
 
 
@@ -55,6 +57,8 @@ void DijkstraAlgo(int src) // adjacency matrix
 int main()
 {
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+    generate(DIMENSION);
     
     ifstream fs("C:/Users/qteix/OneDrive/Bureau/ENSTA/3A/ROB306-SEE/Projet/matrice.txt");
 
@@ -62,11 +66,6 @@ int main()
     {
         string line;
         int i=0, j=0;
-
-        int DIMENSION;
-        if (getline(fs, line)) DIMENSION = stoi(line);
-        else printf("Problème de lecture 1");
-
 
         while(getline(fs, line))
         {

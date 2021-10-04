@@ -2,7 +2,7 @@
 #include <iostream>
 #include <time.h>
 
-int main()
+int generate(int dimension)
 {
     srand(time(NULL));
     std::ofstream fs("matrice.txt");
@@ -12,12 +12,6 @@ int main()
         std::cerr<<"Cannot open the output file." << std::endl;
         return 1;
     }
-    
-    printf("Enter the dimension : ");
-    int dimension;
-    scanf("%d", &dimension);
-
-    fs << std::to_string(dimension) << "\n";
 
     int l = (dimension-1)*dimension/2;
     int tab[dimension][dimension];
