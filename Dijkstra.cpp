@@ -1,6 +1,7 @@
 #include<iostream>
 #include <fstream>
 #include<climits>
+#include "generate.cpp"
 
 using namespace std;
 
@@ -59,6 +60,8 @@ void DijkstraAlgo(int src) // adjacency matrix
 int main()
 {
     ifstream fs("C:/Users/qteix/OneDrive/Bureau/ENSTA/3A/ROB306-SEE/Projet/matrice.txt");
+
+    generate(DIMENSION);
 
     if (fs)
     {
