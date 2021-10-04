@@ -4,9 +4,11 @@
 
 using namespace std;
 
-const int DIMENSION = 20;
+const int DIMENSION = 5;
 
-int miniDist(int distance[], bool Tset[]) // finding minimum distance
+int TAB[DIMENSION][DIMENSION];
+
+int miniDist(int distance[], bool Tset[], int DIMENSION) // finding minimum distance
 {
     int minimum=INT_MAX,ind;
               
@@ -21,7 +23,7 @@ int miniDist(int distance[], bool Tset[]) // finding minimum distance
     return ind;
 }
 
-void DijkstraAlgo(int graph[DIMENSION][DIMENSION],int src) // adjacency matrix 
+void DijkstraAlgo(int src) // adjacency matrix 
 {
     int distance[DIMENSION]; // // array to calculate the minimum distance for each node                             
     bool Tset[DIMENSION];// boolean array to mark visited and unvisited for each node
@@ -37,13 +39,13 @@ void DijkstraAlgo(int graph[DIMENSION][DIMENSION],int src) // adjacency matrix
     
     for(int k = 0; k<DIMENSION; k++)                           
     {
-        int m=miniDist(distance,Tset); 
+        int m=miniDist(distance,Tset, DIMENSION); 
         Tset[m]=true;
         for(int k = 0; k<DIMENSION; k++)                  
         {
             // updating the distance of neighbouring vertex
-            if(!Tset[k] && graph[m][k] && distance[m]!=INT_MAX && distance[m]+graph[m][k]<distance[k])
-                distance[k]=distance[m]+graph[m][k];
+            if(!Tset[k] && TAB[m][k] && distance[m]!=INT_MAX && distance[m]+TAB[m][k]<distance[k])
+                distance[k]=distance[m]+TAB[m][k];
         }
     }
     cout<<"Vertex\t\tDistance from source vertex"<<endl;
@@ -63,11 +65,14 @@ int main()
         string line;
         int i=0, j=0;
 
-        int tab[DIMENSION][DIMENSION];
+        int DIMENSION;
+        if (getline(fs, line)) DIMENSION = stoi(line);
+        else printf("Problème de lecture 1");
+
 
         while(getline(fs, line))
         {
-            if (i<DIMENSION && j<DIMENSION) tab[i][j] = stoi(line);
+            if (i<DIMENSION && j<DIMENSION) TAB[i][j] = stoi(line);
             else printf("Problème de taille");
             i++;
             if (i==DIMENSION)
@@ -78,11 +83,11 @@ int main()
         }
         for (int i=0; i<DIMENSION; i++)
         {
-            for (int j=0; j<DIMENSION; j++) std::cout << tab[i][j] << " ";
+            for (int j=0; j<DIMENSION; j++) std::cout << TAB[i][j] << " ";
             std::cout << std::endl;
 
         }
-        DijkstraAlgo(tab,0);
+        DijkstraAlgo(0);
     }
     else
     {
