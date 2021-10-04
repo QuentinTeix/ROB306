@@ -8,7 +8,7 @@
 
 using namespace std;
 
-const int DIMENSION = 50;
+const int DIMENSION = 719;
 int TAB[DIMENSION][DIMENSION];
 
 
@@ -45,7 +45,7 @@ void DijkstraAlgo(int src) // adjacency matrix
     {
         int m=miniDist(distance,Tset, DIMENSION); 
         Tset[m]=true;
-        for(int k = 0; k<DIMENSION; k++)                  
+        for(int k = 0; k<DIMENSION; k++)
         {
             // updating the distance of neighbouring vertex
             if(!Tset[k] && TAB[m][k] && distance[m]!=INT_MAX && distance[m]+TAB[m][k]<distance[k])
@@ -82,7 +82,7 @@ int main()
         DijkstraAlgo(0);
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
-        std::cout << "Dijkstra Execution Time = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin_dij).count() << "[ns]" << std::endl;
+        std::cout << "Dijkstra Execution Time = " << std::chrono::duration_cast<std::chrono::microseconds> (end - begin_dij).count() << "[micro_sec]" << std::endl;
         std::cout << "Total Execution Time = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[micro_sec]" << std::endl;
     }
     else
