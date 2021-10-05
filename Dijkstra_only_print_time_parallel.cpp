@@ -2,6 +2,7 @@
 #include <fstream>
 #include<climits>
 #include <chrono>
+#include <omp.h>
 
 #include "generate.cpp"
 
@@ -39,7 +40,8 @@ void DijkstraAlgo(int ** tab, int dimension, int src) // adjacency matrix
     }
     
     distance[src] = 0;   // Source vertex distance is set 0               
-    
+# pragma omp parallel
+# pragma omp for nowait
     for(int k = 0; k<dimension; k++)
     {
         int m=miniDist(distance,Tset, dimension);
