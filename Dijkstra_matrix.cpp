@@ -11,6 +11,12 @@ using namespace std;
 const int dimension = 700;
 int TAB[dimension][dimension];
 
+int tab(int i, int j)
+{
+    int nb = 1+(j-i-1)*2;
+    if (i==j) return 0;
+    else return ((nb>0)?nb:-(nb+2));
+}
 
 int miniDist(int distance[], bool Tset[], int dimension) // finding minimum distance
 {
@@ -53,14 +59,9 @@ void DijkstraAlgo(int ** tab, int dimension, int src) // adjacency matrix
     }
 }
 
-int main()
+void Dijkstra(int dimension, double* temps1, double* temps2)
 {
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    
-    int dimension;
-    printf("Enter a dimension : ");
-    scanf ("%d",&dimension);
-
     int **tab = (int**)malloc(dimension*sizeof(char*));
     for (int i=0; i<dimension; i++)
     {
@@ -68,7 +69,7 @@ int main()
         tab[i] = ligne;
     }
 
-
+    // Creation of the matrix
     for (int i=0; i<dimension; i++) for (int j=i; j<dimension; j++)
     {
         if (i==j) tab[i][j]=0;
@@ -83,14 +84,31 @@ int main()
     DijkstraAlgo(tab,dimension,0);
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
-    std::cout << "Dijkstra Execution Time = " << std::chrono::duration_cast<std::chrono::microseconds> (end - begin_dij).count() << "[micro_sec]" << std::endl;
-    std::cout << "Dijkstra Execution Time = " << std::chrono::duration_cast<std::chrono::seconds> (end - begin_dij).count() << "[sec]" << std::endl;
-    std::cout << "Total Execution Time = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[micro_sec]" << std::endl;
-    std::cout << "Total Execution Time = " << std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() << "[sec]" << std::endl;
+    *temps1 = (double)(std::chrono::duration_cast<std::chrono::microseconds> (end - begin_dij).count()) / 1000000;
+    *temps2 = (double)(std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000;
 
     // Libération des mallocs
     for (int i=0; i<dimension; i++) free(tab[i]);
     free(tab);
-    
+}
+
+int main(int argc, char *argv[])
+{
+    int dimension;
+    if (argc <= 1)
+    {
+        printf("Enter a dimension : ");
+        scanf ("%d",&dimension);
+    }
+    else dimension = stoi(argv[1]);
+
+    std::cout << "Chosen dimension : " << dimension << std::endl;
+
+    double temps1, temps2;
+    Dijkstra(dimension, &temps1, &temps2);
+
+    std::cout << "Dijkstra Execution Time = " << temps1 << " [sec]" << std::endl;
+    std::cout << "Total Execution Time = " << temps2 << " [sec]" << std::endl;
+
     return 0;
 }
