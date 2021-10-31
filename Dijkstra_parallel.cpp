@@ -1,15 +1,11 @@
-#include<iostream>
+#include <iostream>
 #include <fstream>
-#include<climits>
+#include <climits>
 #include <chrono>
 #include <omp.h>
-
 #include "generate.cpp"
 
-
 using namespace std;
-
-const int dimension = 700;
 
 int tab(int i, int j)
 {
@@ -37,7 +33,7 @@ int DijkstraAlgo(int dimension, int src) // adjacency matrix
 {
     int distance[dimension]; // // array to calculate the minimum distance for each node                             
     bool Tset[dimension];// boolean array to mark visited and unvisited for each node
-     
+
     for(int k = 0; k<dimension; k++)
     {
         distance[k] = INT_MAX;
@@ -46,12 +42,12 @@ int DijkstraAlgo(int dimension, int src) // adjacency matrix
     
     distance[src] = 0;   // Source vertex distance is set 0               
     
-    #pragma omp
-    #pragma for omp
     for(int k = 0; k<dimension; k++)
     {
         int m=miniDist(distance,Tset, dimension);
         Tset[m]=true;
+
+        #pragma omp parallel for
         for(int k = 0; k<dimension; k++)
         {
             // updating the distance of neighbouring vertex
@@ -62,22 +58,19 @@ int DijkstraAlgo(int dimension, int src) // adjacency matrix
     return distance[dimension-1];
 }
 
-int Dijkstra(int dimension, double* temps1, double* temps2)
+int Dijkstra(int dimension, double* temps1)
 {
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-
     std::chrono::steady_clock::time_point begin_dij = std::chrono::steady_clock::now();
     int dist = DijkstraAlgo(dimension,0);
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-
     *temps1 = (double)(std::chrono::duration_cast<std::chrono::microseconds> (end - begin_dij).count()) / 1000000;
-    *temps2 = (double)(std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000;
-
     return dist;
 }
 
+
 int main(int argc, char *argv[])
 {
+    //////////// CHOIX DIMENSION //////////////
     int dimension;
     if (argc <= 1)
     {
@@ -85,16 +78,13 @@ int main(int argc, char *argv[])
         scanf ("%d",&dimension);
     }
     else dimension = stoi(argv[1]);
-
     std::cout << "Chosen dimension : " << dimension << std::endl;
 
-    double temps1, temps2;
-    int dist = Dijkstra(dimension, &temps1, &temps2);
-
+    //////////// APPEL DIJKSTRA /////////////////
+    double temps1;
+    int dist = Dijkstra(dimension, &temps1);
     std::cout << "Dijkstra Execution Time = " << temps1 << " [sec]" << std::endl;
-    std::cout << "Total Execution Time = " << temps2 << " [sec]" << std::endl;
-
-    std::cout << "Last distance = " << dist << std::endl;
+    std::cout << "Last Distance (Expectation,Result) = (" << dimension - 1 << "," << dist << ")" << std::endl;   // Vérification du code --> Résultat = Dimension-1
 
     return 0;
 }
