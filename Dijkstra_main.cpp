@@ -2,15 +2,12 @@
 #include <fstream>
 #include <climits>
 #include <chrono>
-#include "generate.cpp"
 
 using namespace std;
 
 int tab(int i, int j)
 {
-    int nb = 1+(j-i-1)*2;
-    if (i==j) return 0;
-    else return ((nb>0)?nb:-(nb+2));
+    return ( i==j ? 0 : 1+2*(abs(j-i)-1) );
 }
 
 int miniDist(int distance[], bool Tset[], int dimension) // finding minimum distance
