@@ -7,7 +7,7 @@ using namespace std;
 
 int tab(int i, int j)
 {
-    return ( i==j ? 0 : 1+2*(abs(j-i)-1) );
+    return ( i==j ? 0 : 2*abs(j-i)-1);
 }
 
 int miniDist(int distance[], bool Tset[], int dimension) // finding minimum distance
@@ -29,6 +29,8 @@ int DijkstraAlgo(int dimension, int src) // adjacency matrix
 {
     int distance[dimension]; // // array to calculate the minimum distance for each node                             
     bool Tset[dimension];// boolean array to mark visited and unvisited for each node
+
+    std::cout << "Init done\n";
 
     for(int k = 0; k<dimension; k++)
     {
